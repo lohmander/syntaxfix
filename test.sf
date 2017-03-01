@@ -1,0 +1,2 @@
+module Test exports greet
+greet name =
