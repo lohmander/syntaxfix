@@ -1,5 +1,7 @@
 module Main where
 
+import qualified CodeGen.Javascript.Printer as JS
+import qualified CodeGen.Javascript.Transform as JS
 import           Parser
 import           Text.Megaparsec
 
@@ -25,4 +27,4 @@ die     = exitWith (ExitFailure 1)
 gen :: String -> String
 gen c = case (parse parser "./test.hu" c) of
     Left err -> parseErrorPretty err
-    Right st -> show st
+    Right st -> JS.print $ JS.transform st

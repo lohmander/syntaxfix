@@ -1,2 +1,8 @@
 module Test exports greet
-greet name =
+
+
+greet name = "test topp"
+
+
+greetAll names = "test topp1"
+numNum = -1.02

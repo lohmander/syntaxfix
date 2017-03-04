@@ -7,6 +7,7 @@ import           Text.Megaparsec.Lexer  as L
 import           Text.Megaparsec.String
 
 import           AST
+import           Parser.Expression
 import           Parser.Lexer
 
 
@@ -30,6 +31,7 @@ pFunc = L.nonIndented scn p
   where
     p = do
         fnName <- ident
-        _ <- P.some ident
+        _ <- P.many ident
         _ <- sym "="
-        return $ DeclFunc fnName $ ExprLit $ LitString "test"
+        expr   <- pExpr
+        return $ DeclFunc fnName expr

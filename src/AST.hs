@@ -12,7 +12,7 @@ data Module
 
 
 data Decl
-    = DeclFunc { name :: String, body :: Expr }
+    = DeclFunc String Expr
     deriving (Eq, Show)
 
 
@@ -24,6 +24,6 @@ data Expr
 data Lit
     = LitString String
     | LitInt Int
-    | LitFloat Float
+    | LitFloat Double
     | LitBool Bool
     deriving (Eq, Show)
