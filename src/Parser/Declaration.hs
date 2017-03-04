@@ -27,11 +27,25 @@ pDecl = try pFunc
 
 
 pFunc :: Parser Decl
-pFunc = L.nonIndented scn p
+pFunc = L.nonIndented scn $ L.lineFold scn $ \sc' -> do
+    fnName <- ident
+    params <- P.many ident
+    _      <- sym "="
+    sc'
+    exprs  <- P.some $ pFoldExpr sc'
+    return $ DeclFunc fnName params exprs
   where
-    p = do
-        fnName <- ident
-        _ <- P.many ident
-        _ <- sym "="
-        expr   <- pExpr
-        return $ DeclFunc fnName expr
+    pFoldExpr = \sc' -> do
+        expr <- pExpr
+        _    <- P.try sc' <|> scn
+        return expr
+
+
+-- pFunc :: Parser Decl
+-- pFunc = L.lineFold scn $ \sc' -> do
+--     fnName <- ident
+--     params <- P.many ident
+--     _      <- sym "="
+--     sc'
+--     exprs  <- P.sepBy1 pExpr sc'
+--     return $ DeclFunc fnName params exprs

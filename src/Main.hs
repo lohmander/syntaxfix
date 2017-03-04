@@ -1,7 +1,7 @@
 module Main where
 
 import qualified CodeGen.Javascript.Printer as JS
-import qualified CodeGen.Javascript.Transform as JS
+import qualified CodeGen.Javascript.Transformer as JS
 import           Parser
 import           Text.Megaparsec
 

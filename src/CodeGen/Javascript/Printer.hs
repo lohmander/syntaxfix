@@ -26,7 +26,7 @@ instance PrintableJS JSDecl where
     (&>) doc (JSDeclFunc name params exprs) =
         doc $+$
         text ("function " ++ name) <>
-        parens (hsep (map (\param -> text param <> comma) params)) <+>
+        parens (text $ foldl (++) "" $ intersperse ", " params) <+>
         lbrace $+$
         nest 4 (empty &> exprs) $+$
         rbrace

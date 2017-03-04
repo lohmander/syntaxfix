@@ -12,7 +12,7 @@ data Module
 
 
 data Decl
-    = DeclFunc String Expr
+    = DeclFunc String [String] [Expr]
     deriving (Eq, Show)
 
 

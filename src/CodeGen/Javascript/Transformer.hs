@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-module CodeGen.Javascript.Transform where
+module CodeGen.Javascript.Transformer where
 
 
 import           AST
@@ -16,7 +16,7 @@ instance JSTransformable Module JSModule where
 
 
 instance JSTransformable Decl JSDecl where
-    transform (DeclFunc name statements) = JSDeclFunc name [] [transform statements]
+    transform (DeclFunc name params statements) = JSDeclFunc name params $ map transform statements
 
 
 instance JSTransformable Expr JSState where
