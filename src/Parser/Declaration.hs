@@ -39,13 +39,3 @@ pFunc = L.nonIndented scn $ L.lineFold scn $ \sc' -> do
         expr <- pExpr
         _    <- P.try sc' <|> scn
         return expr
-
-
--- pFunc :: Parser Decl
--- pFunc = L.lineFold scn $ \sc' -> do
---     fnName <- ident
---     params <- P.many ident
---     _      <- sym "="
---     sc'
---     exprs  <- P.sepBy1 pExpr sc'
---     return $ DeclFunc fnName params exprs

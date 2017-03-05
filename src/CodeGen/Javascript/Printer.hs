@@ -14,6 +14,26 @@ print :: JSModule -> String
 print mod = render $ empty &> mod
 
 
+funcDef :: String -> [String] -> Doc -> Doc
+funcDef fnName params body =
+    text "function" <+>
+    text fnName <>
+    parens (text $ foldl (++) "" $ intersperse ", " params) <+>
+    lbrace $+$
+    nest 4 body $+$
+    rbrace
+
+
+funcApp :: String -> [Doc] -> Doc
+funcApp fnName args =
+    text fnName <>
+    parens (foldl (<>) empty $ intersperse (text ", ") args)
+
+
+toDoc :: PrintableJS a => a -> Doc
+toDoc ast = empty &> ast
+
+
 class PrintableJS a where
     (&>) :: Doc -> a -> Doc
 
@@ -38,10 +58,12 @@ instance PrintableJS [JSState] where
 
 instance PrintableJS JSState where
     (&>) doc (JSStateReturn expr) = doc $+$ text "return" &> expr <> semi
+    (&>) doc (JSStateLoose expr)  = doc &> expr <> semi
 
 
 instance PrintableJS JSExpr where
-    (&>) doc (JSExprLit lit) = doc &> lit
+    (&>) doc (JSExprLit lit)         = doc &> lit
+    (&>) doc (JSExprApp fnName args) = doc $+$ (funcApp fnName $ map toDoc args)
 
 
 instance PrintableJS JSLit where

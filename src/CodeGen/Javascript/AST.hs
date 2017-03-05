@@ -13,11 +13,13 @@ data JSDecl
 
 data JSState
     = JSStateReturn JSExpr
+    | JSStateLoose JSExpr -- REMOVE THIS
     deriving (Show, Eq)
 
 
 data JSExpr
     = JSExprLit JSLit
+    | JSExprApp String [JSExpr]
     deriving (Show, Eq)
 
 

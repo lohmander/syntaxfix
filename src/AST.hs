@@ -18,6 +18,7 @@ data Decl
 
 data Expr
     = ExprLit Lit
+    | ExprApp String [Expr]
     deriving (Eq, Show)
 
 

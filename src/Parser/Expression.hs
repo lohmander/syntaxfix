@@ -12,6 +12,7 @@ import           Parser.Lexer
 
 pExpr :: Parser Expr
 pExpr = try pTerm
+    <|> try pApp
 
 
 pTerm :: Parser Expr
@@ -31,3 +32,11 @@ pFloat :: Parser Expr
 pFloat = do
     val <- L.signed sc L.float
     return $ ExprLit $ LitFloat val
+
+
+pApp :: Parser Expr
+pApp = do
+    fnName <- ident
+    sc
+    args   <- P.some pExpr
+    return $ ExprApp fnName args
