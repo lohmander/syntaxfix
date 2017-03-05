@@ -19,6 +19,8 @@ pTerm :: Parser Expr
 pTerm = try (parens pExpr)
     <|> try pString
     <|> try pFloat
+    <|> try pInt
+    <|> try pBool
     <|> try pVar
     <|> try pList
 
@@ -29,6 +31,21 @@ pString = do
     str <- P.many (P.alphaNumChar <|> P.spaceChar)
     _   <- sym "\""
     return $ ExprLit $ LitString str
+
+
+pInt :: Parser Expr
+pInt = do
+    val <- lexeme $ L.signed sc integer
+    return $ ExprLit $ LitInt val
+
+
+pBool :: Parser Expr
+pBool = do
+    val <- P.choice [t, f]
+    return $ ExprLit $ LitBool val
+  where
+    t = do rWord "True"; return True
+    f = do rWord "False"; return False
 
 
 pFloat :: Parser Expr

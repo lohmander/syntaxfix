@@ -27,5 +27,7 @@ data JSExpr
 data JSLit
     = JSLitString String
     | JSLitFloat Float
+    | JSLitInt Integer
+    | JSLitBool Bool
     | JSLitArray [JSExpr]
     deriving (Show, Eq)

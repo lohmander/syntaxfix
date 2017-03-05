@@ -25,7 +25,7 @@ data Expr
 
 data Lit
     = LitString String
-    | LitInt Int
+    | LitInt Integer
     | LitFloat Double
     | LitBool Bool
     | LitList [Expr]

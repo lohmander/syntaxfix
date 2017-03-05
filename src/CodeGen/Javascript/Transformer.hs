@@ -43,4 +43,5 @@ instance JSTransformable Lit JSLit where
     transform (LitString str) = JSLitString str
     transform (LitFloat num)  = JSLitFloat $ double2Float num
     transform (LitList vals)  = JSLitArray $ map transform vals
-    transform _               = JSLitString "NOT IMPLEMENTED"
+    transform (LitInt num)    = JSLitInt num
+    transform (LitBool bool)  = JSLitBool bool

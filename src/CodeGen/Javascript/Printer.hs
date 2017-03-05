@@ -68,4 +68,6 @@ instance PrintableJS JSExpr where
 instance PrintableJS JSLit where
     (&>) doc (JSLitString str) = doc <+> (quotes $ text str)
     (&>) doc (JSLitFloat num)  = doc <+> float num
+    (&>) doc (JSLitInt num)    = doc <+> integer num
+    (&>) doc (JSLitBool bool)  = doc <+> text (if bool then "true" else "false")
     (&>) doc (JSLitArray vals) = doc <+> (brackets $ foldl (<>) empty $ commaSep $ map toDoc vals)

@@ -9,4 +9,7 @@ greetAll names =
         [ "hello"
         , "asdf"
         , -123.234
+        , True
+        , False
+        , 1
         ]
