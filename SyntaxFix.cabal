@@ -23,6 +23,9 @@ executable SyntaxFix
                        Parser.Declaration
                        Parser.Expression
                        Parser.Lexer
+                       CodeGen.Javascript.AST
+                       CodeGen.Javascript.Printer
+                       CodeGen.Javascript.Transformer
   -- other-extensions:    
   build-depends:       base >=4.9 && <4.10,
                        megaparsec >= 5.0.1,
