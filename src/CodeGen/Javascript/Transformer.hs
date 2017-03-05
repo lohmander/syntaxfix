@@ -36,9 +36,11 @@ instance JSTransformable Expr JSState where
 instance JSTransformable Expr JSExpr where
     transform (ExprLit lit)         = JSExprLit $ transform lit
     transform (ExprApp fnName args) = JSExprApp fnName $ map transform args
+    transform (ExprVar var)         = JSExprVar var
 
 
 instance JSTransformable Lit JSLit where
     transform (LitString str) = JSLitString str
     transform (LitFloat num)  = JSLitFloat $ double2Float num
+    transform (LitList vals)  = JSLitArray $ map transform vals
     transform _               = JSLitString "NOT IMPLEMENTED"

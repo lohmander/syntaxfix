@@ -1,15 +1,12 @@
 module Test exports greet
 
 
-greet name = "test topp"
+id x = x
 
 
 greetAll names =
-    greet "gunnar" 1.3
-    greet "svante"
-    "test topp1"
-
-
-arith x y = -1.0234
-
-
+    greet
+        [ "hello"
+        , "asdf"
+        , -123.234
+        ]

@@ -1,13 +1,4 @@
-module Parser.Lexer
-    ( scn
-    , sc
-    , rWord
-    , ident
-    , sym
-    , lexeme
-    , integer
-    , parens
-    ) where
+module Parser.Lexer where
 
 import           Control.Applicative    (empty)
 import           Control.Monad          (void)
@@ -71,5 +62,24 @@ integer :: Parser Integer
 integer = lexeme L.integer
 
 
+float :: Parser Double
+float = lexeme L.float
+
+
 parens :: Parser a -> Parser a
 parens = P.between (sym "(") (sym ")")
+
+
+brackets :: Parser a -> Parser a
+brackets = P.between (sym "[") (sym "]")
+
+
+braces :: Parser a -> Parser a
+braces = P.between (sym "{") (sym "}")
+
+
+manyFolds :: Parser () -> Parser a -> Parser a
+manyFolds sc' p = do
+    x <- p
+    _ <- P.try sc' <|> scn
+    return x

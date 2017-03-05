@@ -11,13 +11,16 @@ import           Parser.Lexer
 
 
 pExpr :: Parser Expr
-pExpr = try pTerm
-    <|> try pApp
+pExpr = try pApp
+    <|> try pTerm
 
 
 pTerm :: Parser Expr
-pTerm = try pString
+pTerm = try (parens pExpr)
+    <|> try pString
     <|> try pFloat
+    <|> try pVar
+    <|> try pList
 
 
 pString :: Parser Expr
@@ -30,13 +33,25 @@ pString = do
 
 pFloat :: Parser Expr
 pFloat = do
-    val <- L.signed sc L.float
+    val <- lexeme $ L.signed sc float
     return $ ExprLit $ LitFloat val
 
 
+pList :: Parser Expr
+pList = L.lineFold scn $ \sc' -> do
+    vals <- brackets $ P.sepBy (manyFolds sc' pExpr) $ sym ","
+    return $ ExprLit $ LitList vals
+
+
 pApp :: Parser Expr
-pApp = do
+pApp = L.lineFold scn $ \sc' -> do
     fnName <- ident
-    sc
-    args   <- P.some pExpr
+    sc'
+    args   <- P.some $ manyFolds sc' pTerm
     return $ ExprApp fnName args
+
+
+pVar :: Parser Expr
+pVar = do
+    var <- ident
+    return $ ExprVar var

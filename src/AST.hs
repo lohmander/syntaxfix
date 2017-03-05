@@ -19,6 +19,7 @@ data Decl
 data Expr
     = ExprLit Lit
     | ExprApp String [Expr]
+    | ExprVar String
     deriving (Eq, Show)
 
 
@@ -27,4 +28,5 @@ data Lit
     | LitInt Int
     | LitFloat Double
     | LitBool Bool
+    | LitList [Expr]
     deriving (Eq, Show)

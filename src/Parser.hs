@@ -14,6 +14,7 @@ parser :: Parser Module
 parser = do
     (Module name exports _) <- pModule
     decls <- P.some pDecl
+    _     <- P.many P.newline
     P.eof
     return $ Module name exports decls
 

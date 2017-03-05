@@ -20,10 +20,12 @@ data JSState
 data JSExpr
     = JSExprLit JSLit
     | JSExprApp String [JSExpr]
+    | JSExprVar String
     deriving (Show, Eq)
 
 
 data JSLit
     = JSLitString String
     | JSLitFloat Float
+    | JSLitArray [JSExpr]
     deriving (Show, Eq)

@@ -30,6 +30,10 @@ funcApp fnName args =
     parens (foldl (<>) empty $ intersperse (text ", ") args)
 
 
+commaSep :: [Doc] -> [Doc]
+commaSep docs = intersperse (text ", ") docs
+
+
 toDoc :: PrintableJS a => a -> Doc
 toDoc ast = empty &> ast
 
@@ -43,13 +47,7 @@ instance PrintableJS JSModule where
 
 
 instance PrintableJS JSDecl where
-    (&>) doc (JSDeclFunc name params exprs) =
-        doc $+$
-        text ("function " ++ name) <>
-        parens (text $ foldl (++) "" $ intersperse ", " params) <+>
-        lbrace $+$
-        nest 4 (empty &> exprs) $+$
-        rbrace
+    (&>) doc (JSDeclFunc name params exprs) = doc $+$ (funcDef name params $ toDoc exprs)
 
 
 instance PrintableJS [JSState] where
@@ -63,9 +61,11 @@ instance PrintableJS JSState where
 
 instance PrintableJS JSExpr where
     (&>) doc (JSExprLit lit)         = doc &> lit
-    (&>) doc (JSExprApp fnName args) = doc $+$ (funcApp fnName $ map toDoc args)
+    (&>) doc (JSExprApp fnName args) = doc <+> (funcApp fnName $ map toDoc args)
+    (&>) doc (JSExprVar var)         = doc <+> text var
 
 
 instance PrintableJS JSLit where
-    (&>) doc (JSLitString str) = doc <+> (doubleQuotes $ text str)
+    (&>) doc (JSLitString str) = doc <+> (quotes $ text str)
     (&>) doc (JSLitFloat num)  = doc <+> float num
+    (&>) doc (JSLitArray vals) = doc <+> (brackets $ foldl (<>) empty $ commaSep $ map toDoc vals)
