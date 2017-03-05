@@ -5,11 +5,14 @@ id x = x
 
 
 greet names =
-    greet
-        [ "hello"
-        , "asdf"
-        , -123.234
-        , True
-        , False
-        , 1
+    hey "asdf"
+
+    (greet names)
+        [ 1
+        , 3 * 2
         ]
+
+    greet
+        "asdf"
+
+    hey "asdf"

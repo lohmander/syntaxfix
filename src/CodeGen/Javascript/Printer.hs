@@ -15,18 +15,18 @@ print mod = render $ empty &> mod
 
 
 funcDef :: String -> [String] -> Doc -> Doc
-funcDef fnName params body =
+funcDef name params body =
     text "function" <+>
-    text fnName <>
+    text name <>
     parens (text $ foldl (++) "" $ intersperse ", " params) <+>
     lbrace $+$
     nest 4 body $+$
     rbrace
 
 
-funcApp :: String -> [Doc] -> Doc
-funcApp fnName args =
-    text fnName <>
+funcApp :: Doc -> [Doc] -> Doc
+funcApp call args =
+    call <>
     parens (foldl (<>) empty $ intersperse (text ", ") args)
 
 
@@ -48,6 +48,7 @@ instance PrintableJS JSModule where
 
 instance PrintableJS JSDecl where
     (&>) doc (JSDeclFunc name params exprs) = doc $+$ (funcDef name params $ toDoc exprs)
+    (&>) doc (JSDeclExport name)            = doc $+$ text "export" <+> text name <> semi
 
 
 instance PrintableJS [JSState] where
@@ -56,13 +57,21 @@ instance PrintableJS [JSState] where
 
 instance PrintableJS JSState where
     (&>) doc (JSStateReturn expr) = doc $+$ text "return" &> expr <> semi
-    (&>) doc (JSStateLoose expr)  = doc &> expr <> semi
+    (&>) doc (JSStateLoose expr)  = doc $+$ toDoc expr <> semi
 
 
 instance PrintableJS JSExpr where
-    (&>) doc (JSExprLit lit)         = doc &> lit
-    (&>) doc (JSExprApp fnName args) = doc <+> (funcApp fnName $ map toDoc args)
-    (&>) doc (JSExprVar var)         = doc <+> text var
+    (&>) doc (JSExprLit lit)        = doc &> lit
+    (&>) doc (JSExprApp call args)  = doc <+> (funcApp (toDoc call) $ map toDoc args)
+    (&>) doc (JSExprVar var)        = doc <+> text var
+    (&>) doc (JSExprArith op e1 e2) = doc &> e1 &> op &> e2
+
+
+instance PrintableJS JSOp where
+    (&>) doc (JSOpAdd)      = doc <+> text "+"
+    (&>) doc (JSOpSubtract) = doc <+> text "-"
+    (&>) doc (JSOpMultiply) = doc <+> text "*"
+    (&>) doc (JSOpDivide)   = doc <+> text "/"
 
 
 instance PrintableJS JSLit where

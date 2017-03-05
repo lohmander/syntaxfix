@@ -2,6 +2,7 @@ module AST
   ( Module(..)
   , Decl(..)
   , Expr(..)
+  , ArithOp(..)
   , Lit(..)
   ) where
 
@@ -18,8 +19,19 @@ data Decl
 
 data Expr
     = ExprLit Lit
-    | ExprApp String [Expr]
+    | ExprApp Expr [Expr]
     | ExprVar String
+    | ExprArith ArithOp Expr Expr
+    | ExprPipe Expr Expr
+    deriving (Eq, Show)
+
+
+data ArithOp
+    = ArithOpAdd
+    | ArithOpSubtract
+    | ArithOpMultiply
+    | ArithOpDivide
+    | ArithOpModulos
     deriving (Eq, Show)
 
 

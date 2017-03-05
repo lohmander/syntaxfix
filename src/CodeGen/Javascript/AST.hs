@@ -8,6 +8,7 @@ data JSModule
 
 data JSDecl
     = JSDeclFunc String [String] [JSState]
+    | JSDeclExport String
     deriving (Show, Eq)
 
 
@@ -19,10 +20,18 @@ data JSState
 
 data JSExpr
     = JSExprLit JSLit
-    | JSExprApp String [JSExpr]
+    | JSExprApp JSExpr [JSExpr]
     | JSExprVar String
+    | JSExprArith JSOp JSExpr JSExpr
     deriving (Show, Eq)
 
+
+data JSOp
+    = JSOpAdd
+    | JSOpSubtract
+    | JSOpMultiply
+    | JSOpDivide
+    deriving (Show, Eq)
 
 data JSLit
     = JSLitString String

@@ -14,7 +14,8 @@ class JSTransformable a b where
 
 
 instance JSTransformable Module JSModule where
-    transform (Module _ _ decls) = JSModule $ map transform decls
+    transform (Module _ exports decls) = JSModule $
+        (map transform decls) ++ (map (\e -> JSDeclExport e) exports)
 
 
 instance JSTransformable Decl JSDecl where
@@ -35,8 +36,18 @@ instance JSTransformable Expr JSState where
 
 instance JSTransformable Expr JSExpr where
     transform (ExprLit lit)         = JSExprLit $ transform lit
-    transform (ExprApp fnName args) = JSExprApp fnName $ map transform args
+    transform (ExprApp call args)   = JSExprApp (transform call) $ map transform args
     transform (ExprVar var)         = JSExprVar var
+    transform (ExprArith op e1 e2)  = JSExprArith (transform op) (transform e1) (transform e2)
+    transform (ExprPipe _ _)        = JSExprVar "NOT IMPLMENTED"
+
+
+instance JSTransformable ArithOp JSOp where
+    transform ArithOpAdd      = JSOpAdd
+    transform ArithOpSubtract = JSOpSubtract
+    transform ArithOpMultiply = JSOpMultiply
+    transform ArithOpDivide   = JSOpDivide
+    transform ArithOpModulos  = JSOpAdd
 
 
 instance JSTransformable Lit JSLit where

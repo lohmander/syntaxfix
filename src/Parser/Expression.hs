@@ -12,6 +12,7 @@ import           Parser.Lexer
 
 pExpr :: Parser Expr
 pExpr = try pApp
+    <|> try pArithExpr
     <|> try pTerm
 
 
@@ -61,14 +62,28 @@ pList = L.lineFold scn $ \sc' -> do
 
 
 pApp :: Parser Expr
-pApp = L.lineFold scn $ \sc' -> do
-    fnName <- ident
-    sc'
-    args   <- P.some $ manyFolds sc' pTerm
-    return $ ExprApp fnName args
+pApp = do
+    (call, args) <- lineSepIndentFold pCallable pTerm sc
+    return $ ExprApp call args
+  where
+    pCallable = try (parens pExpr) <|> try pVar
 
 
 pVar :: Parser Expr
 pVar = do
     var <- ident
     return $ ExprVar var
+
+
+pArithOp :: [[Operator Parser Expr]]
+pArithOp =
+    [ [ InfixL (sym "*" *> pure (ExprArith ArithOpMultiply))
+      , InfixL (sym "/" *> pure (ExprArith ArithOpDivide))
+      ]
+    , [ InfixL (sym "+" *> pure (ExprArith ArithOpAdd))
+      , InfixL (sym "-" *> pure (ExprArith ArithOpSubtract))
+      ]
+    ]
+
+pArithExpr :: Parser Expr
+pArithExpr = makeExprParser pTerm pArithOp

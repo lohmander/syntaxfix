@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module Parser.Lexer where
 
 import           Control.Applicative    (empty)
@@ -83,3 +85,16 @@ manyFolds sc' p = do
     x <- p
     _ <- P.try sc' <|> scn
     return x
+
+
+lineSepIndentFold :: Parser a -> Parser b -> Parser c -> Parser (a, [b])
+lineSepIndentFold p ps sep = P.try pOneLine <|> L.indentBlock scn pMultiLine
+  where
+    pOneLine = do
+        x <- p
+        y <- P.sepBy1 ps sep
+        return (x, y)
+
+    pMultiLine = do
+        x <- p
+        return $ L.IndentSome Nothing (return . (x,)) ps
