@@ -19,7 +19,11 @@ instance JSTransformable Module JSModule where
 
 
 instance JSTransformable Decl JSDecl where
-    transform (DeclFunc name params statements) = JSDeclFunc name params $ transform statements
+    transform (DeclFunc name params statements vars) = JSDeclFunc name params $ transform vars ++ transform statements
+
+
+instance JSTransformable [(String, Expr)] [JSState] where
+    transform assignments = map (\(name, expr) -> JSStateLetAssign name $ transform expr) assignments
 
 
 instance JSTransformable [Expr] [JSState] where

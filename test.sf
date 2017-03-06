@@ -1,18 +1,11 @@
-module Test exports greet
+module Test exports id greet
+
+
+greet name =
+    greet greeting
+  where
+    greeting = "hello " + name
+    x = 2
 
 
 id x = x
-
-
-greet names =
-    hey "asdf"
-
-    (greet names)
-        [ 1
-        , 3 * 2
-        ]
-
-    greet
-        "asdf"
-
-    hey "asdf"

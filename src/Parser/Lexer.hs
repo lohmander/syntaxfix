@@ -20,6 +20,7 @@ reservedWords =
     , "exports"
     , "mutable"
     , "const"
+    , "where"
     , "True"
     , "False"
     , "None"

@@ -30,6 +30,15 @@ funcApp call args =
     parens (foldl (<>) empty $ intersperse (text ", ") args)
 
 
+letAssign :: String -> Doc -> Doc
+letAssign name val =
+    text "let" <+>
+    text name <+>
+    equals <+>
+    val <>
+    semi
+
+
 commaSep :: [Doc] -> [Doc]
 commaSep docs = intersperse (text ", ") docs
 
@@ -58,6 +67,7 @@ instance PrintableJS [JSState] where
 instance PrintableJS JSState where
     (&>) doc (JSStateReturn expr) = doc $+$ text "return" &> expr <> semi
     (&>) doc (JSStateLoose expr)  = doc $+$ toDoc expr <> semi
+    (&>) doc (JSStateLetAssign name expr) = doc $+$ (letAssign name $ toDoc expr)
 
 
 instance PrintableJS JSExpr where

@@ -14,6 +14,7 @@ data JSDecl
 
 data JSState
     = JSStateReturn JSExpr
+    | JSStateLetAssign String JSExpr
     | JSStateLoose JSExpr -- REMOVE THIS
     deriving (Show, Eq)
 
