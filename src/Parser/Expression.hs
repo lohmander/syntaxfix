@@ -71,7 +71,7 @@ pApp = do
 
 pVar :: Parser Expr
 pVar = do
-    var <- ident
+    var <- dotIdent
     return $ ExprVar var
 
 

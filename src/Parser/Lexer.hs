@@ -58,6 +58,16 @@ ident = lexeme (p >>= check)
             else return x
 
 
+dotIdent :: Parser String
+dotIdent = lexeme (p >>= check)
+  where
+    p = (:) <$> P.letterChar <*> P.many (P.alphaNumChar <|> P.char '_' <|> P.char '.')
+    check x =
+        if x `elem` reservedWords
+            then fail $ "Keyword " ++ show x ++ " is reserved."
+            else return x
+
+
 sym :: String -> Parser String
 sym = L.symbol sc
 

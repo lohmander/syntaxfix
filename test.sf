@@ -1,8 +1,18 @@
 module Test runs main
 
 
+MyComponent props =
+    div []
+        [ h1 [] [ heading ]
+        , span [] [ "test" ]
+        , span [] [ "hopp" ]
+        ]
+  where
+    heading = "woop"
+
+
 greet name =
-    greet greeting
+    greeting
   where
     greeting = "hello " + name
 
@@ -16,4 +26,4 @@ square x =
 id x = x
 
 
-main = greet ("Hello " + (id (square 10)))
+main = console.log (greet ("Hello " + (id (square 10))))
