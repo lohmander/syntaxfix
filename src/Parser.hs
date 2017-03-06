@@ -12,11 +12,11 @@ import           Parser.Declaration
 
 parser :: Parser Module
 parser = do
-    (Module name exports _) <- pModule
+    (Module name exports runs _) <- pModule
     decls <- P.some pDecl
     _     <- P.many P.newline
     P.eof
-    return $ Module name exports decls
+    return $ Module name exports runs decls
 
 
 

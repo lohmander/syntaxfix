@@ -47,16 +47,20 @@ toDoc :: PrintableJS a => a -> Doc
 toDoc ast = empty &> ast
 
 
+blank :: Doc
+blank = text ""
+
+
 class PrintableJS a where
     (&>) :: Doc -> a -> Doc
 
 
 instance PrintableJS JSModule where
-    (&>) doc (JSModule decls) = doc <> foldl (&>) empty decls
+    (&>) doc (JSModule decls runs) = doc <> foldl (&>) empty decls <> foldl (&>) empty runs
 
 
 instance PrintableJS JSDecl where
-    (&>) doc (JSDeclFunc name params exprs) = doc $+$ (funcDef name params $ toDoc exprs)
+    (&>) doc (JSDeclFunc name params exprs) = doc $+$ (funcDef name params $ toDoc exprs) $+$ blank
     (&>) doc (JSDeclExport name)            = doc $+$ text "export" <+> text name <> semi
 
 
@@ -82,7 +86,7 @@ instance PrintableJS JSOp where
     (&>) doc (JSOpSubtract) = doc <+> text "-"
     (&>) doc (JSOpMultiply) = doc <+> text "*"
     (&>) doc (JSOpDivide)   = doc <+> text "/"
-    (&>) doc (JSOpModulus)   = doc <+> text "%"
+    (&>) doc (JSOpModulus)  = doc <+> text "%"
 
 
 instance PrintableJS JSLit where

@@ -14,8 +14,10 @@ class JSTransformable a b where
 
 
 instance JSTransformable Module JSModule where
-    transform (Module _ exports decls) = JSModule $
-        (map transform decls) ++ (map (\e -> JSDeclExport e) exports)
+    transform (Module _ exports runs decls) =
+        JSModule
+            ((map transform decls) ++ (map (\e -> JSDeclExport e) exports))
+            (map (\name -> JSStateLoose $ JSExprApp (JSExprVar name) []) runs)
 
 
 instance JSTransformable Decl JSDecl where

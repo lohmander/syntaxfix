@@ -8,7 +8,7 @@ module AST
 
 
 data Module
-    = Module String [String] [Decl]
+    = Module String [String] [String] [Decl]
     deriving (Eq, Show)
 
 

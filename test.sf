@@ -1,16 +1,19 @@
-module Test exports id greet
+module Test runs main
 
 
 greet name =
     greet greeting
   where
     greeting = "hello " + name
-    x = 11 % 2
+
+
+square x =
+    y
+  where
     y = x ^ 2
 
-
-square x = x ^ 2
 
 id x = x
 
 
+main = greet ("Hello " + (id (square 10)))

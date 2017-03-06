@@ -18,6 +18,7 @@ reservedWords =
     , "class"
     , "module"
     , "exports"
+    , "runs"
     , "mutable"
     , "const"
     , "where"

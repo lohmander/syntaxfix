@@ -2,7 +2,7 @@ module CodeGen.Javascript.AST where
 
 
 data JSModule
-    = JSModule [JSDecl]
+    = JSModule [JSDecl] [JSState]
     deriving (Show, Eq)
 
 

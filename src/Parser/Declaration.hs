@@ -15,11 +15,15 @@ pModule :: Parser Module
 pModule = do
     rWord "module"
     moduleName <- ident
-    rWord "exports"
-    exports <- p
-    return $ Module moduleName exports []
+    exports <- P.option [] $ try $ p "exports"
+    runs    <- P.option [] $ try $ p "runs"
+    return $ Module moduleName exports runs []
   where
-    p = P.sepBy ident sc
+    p rw = do
+        rWord rw
+        exports <- P.some ident
+        return exports
+
 
 
 pDecl :: Parser Decl
