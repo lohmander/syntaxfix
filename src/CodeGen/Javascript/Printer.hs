@@ -82,6 +82,7 @@ instance PrintableJS JSOp where
     (&>) doc (JSOpSubtract) = doc <+> text "-"
     (&>) doc (JSOpMultiply) = doc <+> text "*"
     (&>) doc (JSOpDivide)   = doc <+> text "/"
+    (&>) doc (JSOpModulus)   = doc <+> text "%"
 
 
 instance PrintableJS JSLit where

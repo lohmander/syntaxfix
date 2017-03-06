@@ -5,7 +5,12 @@ greet name =
     greet greeting
   where
     greeting = "hello " + name
-    x = 2
+    x = 11 % 2
+    y = x ^ 2
 
+
+square x = x ^ 2
 
 id x = x
+
+

@@ -39,11 +39,12 @@ instance JSTransformable Expr JSState where
 
 
 instance JSTransformable Expr JSExpr where
-    transform (ExprLit lit)         = JSExprLit $ transform lit
-    transform (ExprApp call args)   = JSExprApp (transform call) $ map transform args
-    transform (ExprVar var)         = JSExprVar var
-    transform (ExprArith op e1 e2)  = JSExprArith (transform op) (transform e1) (transform e2)
-    transform (ExprPipe _ _)        = JSExprVar "NOT IMPLMENTED"
+    transform (ExprLit lit)                = JSExprLit $ transform lit
+    transform (ExprApp call args)          = JSExprApp (transform call) $ map transform args
+    transform (ExprVar var)                = JSExprVar var
+    transform (ExprArith ArithOpPow e1 e2) = JSExprApp (JSExprVar "Math.pow") $ map transform [e1, e2]
+    transform (ExprArith op e1 e2)         = JSExprArith (transform op) (transform e1) (transform e2)
+    transform (ExprPipe _ _)               = JSExprVar "NOT IMPLMENTED"
 
 
 instance JSTransformable ArithOp JSOp where
@@ -51,7 +52,8 @@ instance JSTransformable ArithOp JSOp where
     transform ArithOpSubtract = JSOpSubtract
     transform ArithOpMultiply = JSOpMultiply
     transform ArithOpDivide   = JSOpDivide
-    transform ArithOpModulos  = JSOpAdd
+    transform ArithOpModulus  = JSOpModulus
+    transform _               = JSOpAdd -- will never hit
 
 
 instance JSTransformable Lit JSLit where

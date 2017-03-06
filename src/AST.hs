@@ -31,7 +31,8 @@ data ArithOp
     | ArithOpSubtract
     | ArithOpMultiply
     | ArithOpDivide
-    | ArithOpModulos
+    | ArithOpModulus
+    | ArithOpPow
     deriving (Eq, Show)
 
 

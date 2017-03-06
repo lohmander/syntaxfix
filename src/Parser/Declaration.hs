@@ -61,8 +61,8 @@ pFunc = L.nonIndented scn $ do
     pos  <- L.indentLevel
 
     (fnName, params) <- pFuncDef
-    body <- pFuncBody pos
-    vars <- P.option [] $ pFuncVars pos
+    body             <- pFuncBody pos
+    vars             <- P.option [] (try $ pFuncVars pos)
 
     return $ DeclFunc fnName params body vars
 

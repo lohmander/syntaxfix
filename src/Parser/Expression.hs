@@ -79,6 +79,8 @@ pArithOp :: [[Operator Parser Expr]]
 pArithOp =
     [ [ InfixL (sym "*" *> pure (ExprArith ArithOpMultiply))
       , InfixL (sym "/" *> pure (ExprArith ArithOpDivide))
+      , InfixL (sym "%" *> pure (ExprArith ArithOpModulus))
+      , InfixL (sym "^" *> pure (ExprArith ArithOpPow))
       ]
     , [ InfixL (sym "+" *> pure (ExprArith ArithOpAdd))
       , InfixL (sym "-" *> pure (ExprArith ArithOpSubtract))

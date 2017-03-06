@@ -32,6 +32,7 @@ data JSOp
     | JSOpSubtract
     | JSOpMultiply
     | JSOpDivide
+    | JSOpModulus
     deriving (Show, Eq)
 
 data JSLit
