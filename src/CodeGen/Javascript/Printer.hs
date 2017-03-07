@@ -93,10 +93,11 @@ instance PrintableJS JSState where
 
 
 instance PrintableJS JSExpr where
-    (&>) doc (JSExprLit lit)        = doc &> lit
-    (&>) doc (JSExprApp call args)  = doc <+> (funcApp (toDoc call) $ map toDoc args)
-    (&>) doc (JSExprVar var)        = doc <+> text var
-    (&>) doc (JSExprArith op e1 e2) = doc &> e1 &> op &> e2
+    (&>) doc (JSExprLit lit)            = doc &> lit
+    (&>) doc (JSExprApp call args)      = doc <+> (funcApp (toDoc call) $ map toDoc args)
+    (&>) doc (JSExprVar var)            = doc <+> text var
+    (&>) doc (JSExprArith op e1 e2)     = doc &> e1 &> op &> e2
+    (&>) doc (JSExprLambda params expr) = doc <+> parens (funcDef "" params $ toDoc expr)
 
 
 instance PrintableJS JSOp where

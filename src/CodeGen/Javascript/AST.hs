@@ -25,6 +25,7 @@ data JSExpr
     | JSExprApp JSExpr [JSExpr]
     | JSExprVar String
     | JSExprArith JSOp JSExpr JSExpr
+    | JSExprLambda [String] JSExpr
     deriving (Show, Eq)
 
 

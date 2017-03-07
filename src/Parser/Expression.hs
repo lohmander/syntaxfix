@@ -18,6 +18,7 @@ pExpr = try pApp
 
 pTerm :: Parser Expr
 pTerm = try (parens pExpr)
+    <|> try pLambda
     <|> try pString
     <|> try pFloat
     <|> try pInt
@@ -73,6 +74,15 @@ pVar :: Parser Expr
 pVar = do
     var <- dotIdent
     return $ ExprVar var
+
+
+pLambda :: Parser Expr
+pLambda = do
+    _      <- sym "\\"
+    params <- P.many ident
+    _      <- sym "->"
+    expr   <- pExpr
+    return $ ExprLambda params expr
 
 
 pArithOp :: [[Operator Parser Expr]]

@@ -29,6 +29,8 @@ square x =
 id x = x
 cube x = x ^ 3
 
+flip fn = \a b -> fn b a
+
 
 
 main =

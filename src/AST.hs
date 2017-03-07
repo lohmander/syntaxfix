@@ -31,6 +31,7 @@ data Expr
     | ExprVar String
     | ExprArith ArithOp Expr Expr
     | ExprPipe Expr Expr
+    | ExprLambda [String] Expr
     deriving (Eq, Show)
 
 

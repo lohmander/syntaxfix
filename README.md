@@ -74,16 +74,16 @@
     greet name = "Hello {{name}}!"
     ```
     
-  - [ ] Lambda
+  - [x] Lambda
   
     ```haskell
-    x y -> x ^ y
+    \x y -> x ^ y
     ```
     
   - [ ] `this`-bound lambda
   
     ```haskell
-    x y => x ^ y
+    \x y => x ^ y
     ```
     
   - [ ] Add pipe (`|>`) operator

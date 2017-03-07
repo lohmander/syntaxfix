@@ -47,6 +47,7 @@ instance JSTransformable Expr JSExpr where
     transform (ExprVar var)                = JSExprVar var
     transform (ExprArith ArithOpPow e1 e2) = JSExprApp (JSExprVar "Math.pow") $ map transform [e1, e2]
     transform (ExprArith op e1 e2)         = JSExprArith (transform op) (transform e1) (transform e2)
+    transform (ExprLambda params expr)     = JSExprLambda params $ transform expr
     transform (ExprPipe _ _)               = JSExprVar "NOT IMPLMENTED"
 
 
