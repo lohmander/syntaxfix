@@ -29,13 +29,13 @@
     10 / 2
     ```
     
-  - [ ] Modulos
+  - [x] Modulos
     
     ```javascript
     11 % 2
     ```
     
-  - [ ] Exponent
+  - [x] Exponent
   
     ```haskell
     10 ^ 2
