@@ -30,11 +30,11 @@ main = do
 
 
 run :: SyntaxFixCLI -> IO ()
-run (Compile filename) = readFile filename >>= putStr . gen
+run (Compile filename) = readFile filename >>= putStr . (gen filename)
 run _ = do putStr "Can't do that yet."
 
 
-gen :: String -> String
-gen c = case (parse parser "./test.sf" c) of
+gen :: String -> String -> String
+gen filename c = case (parse parser filename c) of
     Left err -> parseErrorPretty err
     Right st -> JS.print $ JS.transform st
