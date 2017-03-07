@@ -30,36 +30,6 @@ pDecl :: Parser Decl
 pDecl = try pFunc
 
 
--- pFunc :: Parser Decl
--- pFunc = L.nonIndented scn $ do
---     exprs  <- pMultiLine
---     -- vars   <- P.option [] pWhere
---     return $ DeclFunc fnName params exprs []
---   where
---     pDef = do
---         fnName <- ident
---         params <- P.many ident
---         _      <- sym "="
-        
-
---     pAssign = do
---         var  <- ident
---         _    <- sym "="
---         expr <- pExpr
---         return (var, expr)
-
---     pWhere = L.indentBlock scn $ do
---         rWord "where"
---         return $ L.IndentSome Nothing return pAssign
-
---     pOneLine = do
---         exprs <- P.sepBy1 pExpr $ sym ";"
---         return exprs
-
---     pMultiLine = L.indentBlock scn $ do
---         return $ L.IndentSome (Just 5) return pExpr
-
-
 pFunc :: Parser Decl
 pFunc = L.nonIndented scn $ do
     pos  <- L.indentLevel
@@ -101,37 +71,3 @@ pFuncVars pos = do
         _   <- sym "="
         val <- pExpr
         return (var, val)
-
-
--- pFunc :: Parser Decl
--- pFunc = L.nonIndented scn $ do
---     (DeclFunc fnName params exprs _) <- (try pOneLine <|> pMultiLine)
---     -- vars                             <- P.option [] pWhere
---     return $ DeclFunc fnName params exprs []
---   where
---     pDef = do
---         fnName <- ident
---         params <- P.many ident
---         _      <- sym "="
---         return (fnName, params)
-
---     pAssign = do
---         var  <- ident
---         _    <- sym "="
---         expr <- pExpr
---         return (var, expr)
-
---     pWhere = L.lineFold scn $ \sc' -> do
---         rWord "where"
---         sc'
---         vars <- P.some $ manyFolds sc' pAssign
---         return vars
-
---     pOneLine = do
---         (fnName, params) <- pDef
---         exprs            <- P.sepBy1 pExpr $ sym ";"
---         return $ DeclFunc fnName params exprs []
-
---     pMultiLine = L.indentBlock scn $ do
---         (fnName, params) <- pDef
---         return $ L.IndentSome Nothing (return . (\exprs -> DeclFunc fnName params exprs [])) pExpr
