@@ -1,5 +1,8 @@
 module Test runs main
 
+from react     import (default as React) Component
+from Core/Math import (add as adder) subtract
+
 
 MyComponent props =
     div []
@@ -24,6 +27,14 @@ square x =
 
 
 id x = x
+cube x = x ^ 3
 
 
-main = console.log (greet ("Hello " + (id (square 10))))
+
+main =
+    app.get "asdf" handleRoot
+    app.get "asdf" handleRoot
+    app.listen 3000
+  where
+    app = Express (0) 
+

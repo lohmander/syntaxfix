@@ -1,5 +1,6 @@
 module AST
   ( Module(..)
+  , ImportType(..)
   , Decl(..)
   , Expr(..)
   , ArithOp(..)
@@ -12,8 +13,15 @@ data Module
     deriving (Eq, Show)
 
 
+data ImportType
+    = ImportJS
+    | ImportSyntaxfix
+    deriving (Eq, Show)
+
+
 data Decl
     = DeclFunc String [String] [Expr] [(String, Expr)]
+    | DeclImport ImportType String (Maybe String) [(Maybe String, String)]
     deriving (Eq, Show)
 
 

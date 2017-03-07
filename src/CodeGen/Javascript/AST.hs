@@ -9,6 +9,7 @@ data JSModule
 data JSDecl
     = JSDeclFunc String [String] [JSState]
     | JSDeclExport String
+    | JSDeclImport String (Maybe String) [(Maybe String, String)]
     deriving (Show, Eq)
 
 

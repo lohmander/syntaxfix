@@ -22,6 +22,7 @@ instance JSTransformable Module JSModule where
 
 instance JSTransformable Decl JSDecl where
     transform (DeclFunc name params statements vars) = JSDeclFunc name params $ transform vars ++ transform statements
+    transform (DeclImport _ src default' imports)    = JSDeclImport src default' imports
 
 
 instance JSTransformable [(String, Expr)] [JSState] where

@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 module Parser.Declaration where
 
 import           Text.Megaparsec        (try, (<|>), (<?>))
@@ -27,7 +29,37 @@ pModule = do
 
 
 pDecl :: Parser Decl
-pDecl = try pFunc
+pDecl = try pImport
+    <|> try pFunc
+
+
+pImport :: Parser Decl
+pImport = L.nonIndented scn $ do
+    kind    <- try pFromJS <|> pFromSF
+    src     <- identWith ['/']
+    rWord "import"
+    default' <- P.option Nothing $ try $ parens pDefaultAs
+    imports  <- P.sepBy1 (try (parens pImportItemAs) <|> pImportItem) sc
+    return $ DeclImport kind src default' imports
+  where
+    pFromJS = do rWord "fromjs"; return ImportJS
+    pFromSF = do rWord "from"; return ImportSyntaxfix
+
+    pDefaultAs = do
+        rWord "default";
+        rWord "as"
+        name <- ident
+        return $ Just name
+
+    pImportItem = do
+        name <- ident
+        return (Nothing, name)
+
+    pImportItemAs = do
+        imported <- ident
+        rWord "as"
+        name     <- ident
+        return (Just imported, name)
 
 
 pFunc :: Parser Decl

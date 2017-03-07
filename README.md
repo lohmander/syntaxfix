@@ -140,11 +140,11 @@
   - [ ] Static property definition
   - [ ] Constructor
 - [ ] Modules
-  - [ ] Import JS modules
+  - [x] Import JS modules
   
     ```haskell
-    from js:react             import (default as React) Component
-    from js:utils/preferences import get set remove
+    fromjs react             import (default as React) Component
+    fromjs utils/preferences import get set remove
     ```
     
   - [ ] Import Syntaxfix modules

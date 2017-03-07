@@ -39,6 +39,23 @@ letAssign name val =
     semi
 
 
+importStatement :: String -> Maybe String -> [(Maybe String, String)] -> Doc
+importStatement src default' imports =
+    text "import" <+>
+    defaultDoc default' <+>
+    braces (text interspersedImports) <+>
+    text "from" <+>
+    quotes (text src) <>
+    semi
+  where
+    importMap (Just name, import') = name ++ " as " ++ import'
+    importMap (Nothing, import')   = import'
+
+    defaultDoc (Just name) = text name <> comma
+    defaultDoc (Nothing)   = empty
+
+    interspersedImports = foldl1 (++) $ intersperse ", " $ map importMap imports
+
 commaSep :: [Doc] -> [Doc]
 commaSep docs = intersperse (text ", ") docs
 
@@ -60,8 +77,9 @@ instance PrintableJS JSModule where
 
 
 instance PrintableJS JSDecl where
-    (&>) doc (JSDeclFunc name params exprs) = doc $+$ (funcDef name params $ toDoc exprs) $+$ blank
-    (&>) doc (JSDeclExport name)            = doc $+$ text "export" <+> text name <> semi
+    (&>) doc (JSDeclFunc name params exprs)      = doc $+$ (funcDef name params $ toDoc exprs) $+$ blank
+    (&>) doc (JSDeclExport name)                 = doc $+$ text "export" <+> text name <> semi
+    (&>) doc (JSDeclImport src default' imports) = doc $+$ importStatement src default' imports
 
 
 instance PrintableJS [JSState] where

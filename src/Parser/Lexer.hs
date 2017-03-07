@@ -14,17 +14,19 @@ import           Text.Megaparsec.String
 reservedWords :: [String]
 reservedWords =
     [ "from"
+    , "fromjs"
     , "import"
     , "class"
+    , "extends"
     , "module"
     , "exports"
     , "runs"
-    , "mutable"
     , "const"
     , "where"
     , "True"
     , "False"
     , "None"
+    , "undefined"
     ]
 
 
@@ -49,19 +51,17 @@ rWord w = P.string w *> P.notFollowedBy P.alphaNumChar *> sc
 
 
 ident :: Parser String
-ident = lexeme (p >>= check)
-  where
-    p = (:) <$> P.letterChar <*> P.many (P.alphaNumChar <|> P.char '_')
-    check x =
-        if x `elem` reservedWords
-            then fail $ "Keyword " ++ show x ++ " is reserved."
-            else return x
+ident = identWith ['_']
 
 
 dotIdent :: Parser String
-dotIdent = lexeme (p >>= check)
+dotIdent = identWith ['_', '.']
+
+
+identWith :: [Char] -> Parser String
+identWith chars = lexeme (p >>= check)
   where
-    p = (:) <$> P.letterChar <*> P.many (P.alphaNumChar <|> P.char '_' <|> P.char '.')
+    p = (:) <$> P.letterChar <*> P.many (foldl (\acc ch -> acc <|> P.char ch) P.alphaNumChar chars)
     check x =
         if x `elem` reservedWords
             then fail $ "Keyword " ++ show x ++ " is reserved."
