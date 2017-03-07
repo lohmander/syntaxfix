@@ -131,11 +131,13 @@
   - [ ] Import JS modules
   
     ```haskell
-    from js:react             import (default as React) Component
-    from js:utils/preferences import get set remove
+    fromjs react             import (default as React) Component
+    fromjs utils/preferences import get set remove
     ```
     
   - [ ] Import Syntaxfix modules
+  
+    Unlike ES modules, modules is Syntaxfix are referenced relative to the **Main module**. That is, if you're writing a module that has the file path (relative to your project root) *./Utils/Screen.sf* and you want to import *./Utils/Math.sf*, you still write as follows.
   
     ```haskell
     from Utils/Math import randBetween uniqueRand
@@ -154,6 +156,13 @@
     ```haskell
     module MyModule exports greet meet
     ```
+    
+  - [x] Specify runnable module
+  
+    ```haskell
+    module Main runs main
+    ```
+    
 - [ ] Types
   - [ ] Support for primitive types (String, Int, Float, Bool, Void)
   - [ ] Support for complex types (List, Dict)
