@@ -94,7 +94,7 @@
         |> reduce (+)
     ```
     
-  - [ ] Add prototype pull (`..`) operator
+  - [ ] Add instance method pull (`..`) operator
   
     ```haskell
     replace "Hej" "Hello" .. "Hej Gunnar!"
