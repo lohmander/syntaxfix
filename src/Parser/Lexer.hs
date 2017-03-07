@@ -16,6 +16,8 @@ reservedWords =
     [ "from"
     , "fromjs"
     , "import"
+    , "default"
+    , "as"
     , "class"
     , "extends"
     , "module"
