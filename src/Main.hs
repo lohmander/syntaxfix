@@ -1,27 +1,37 @@
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 module Main where
 
-import qualified CodeGen.Javascript.Printer as JS
+import qualified CodeGen.Javascript.Printer     as JS
 import qualified CodeGen.Javascript.Transformer as JS
 import           Parser
 import           Text.Megaparsec
 
+import           Data.Version
+import           Options.Generic
 import           System.Environment
 import           System.Exit
 
 
-main = getArgs >>= cmdParse >>= putStr . gen
+data SyntaxFixCLI
+    = Compile String
+    | Format String
+    deriving (Generic, Show)
 
 
-cmdParse ["-h"] = usage   >> exit
-cmdParse ["-v"] = version >> exit
-cmdParse []     = getContents
-cmdParse fs     = concat `fmap` mapM readFile fs
+instance ParseRecord SyntaxFixCLI
 
 
-usage   = putStrLn "Usage: syntaxfix [-vh] [file...]"
-version = putStrLn "Syntaxfix 0.0"
-exit    = exitWith ExitSuccess
-die     = exitWith (ExitFailure 1)
+main :: IO ()
+main = do
+    x <- getRecord "SyntaxFix"
+    run (x :: SyntaxFixCLI)
+
+
+run :: SyntaxFixCLI -> IO ()
+run (Compile filename) = readFile filename >>= putStr . gen
+run _ = do putStr "Can't do that yet."
 
 
 gen :: String -> String
