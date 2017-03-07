@@ -4,7 +4,7 @@
 
 ### Language
 
-- [ ] Arithmetic
+- [x] Arithmetic
   - [x] Addition
   
     ```javascript
@@ -109,18 +109,6 @@
     const
         COW = 1
         CAT = 2
-    ```
-    
-  - [ ] Inferred type
-- [ ] Mutables
-  - [ ] Top level definition
-  
-    ```haskell
-    mutable howdy = "Hello"
-    
-    mutable
-        cow = 1
-        cat = 2
     ```
     
   - [ ] Inferred type
