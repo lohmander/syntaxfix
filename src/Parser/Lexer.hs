@@ -27,7 +27,7 @@ reservedWords =
     , "where"
     , "True"
     , "False"
-    , "None"
+    , "null"
     , "undefined"
     ]
 

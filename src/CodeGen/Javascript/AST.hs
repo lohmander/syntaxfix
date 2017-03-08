@@ -10,6 +10,7 @@ data JSDecl
     = JSDeclFunc String [String] [JSState]
     | JSDeclExport String
     | JSDeclImport String (Maybe String) [(Maybe String, String)]
+    | JSDeclConst String JSExpr
     deriving (Show, Eq)
 
 

@@ -30,6 +30,7 @@ pModule = do
 
 pDecl :: Parser Decl
 pDecl = try pImport
+    <|> try pConst
     <|> try pFunc
 
 
@@ -60,6 +61,16 @@ pImport = L.nonIndented scn $ do
         rWord "as"
         name     <- ident
         return (Just imported, name)
+
+
+
+pConst :: Parser Decl
+pConst = L.nonIndented scn $ do
+    rWord "const"
+    name <- ident
+    _    <- sym "="
+    expr <- pExpr
+    return $ DeclConst name expr
 
 
 pFunc :: Parser Decl

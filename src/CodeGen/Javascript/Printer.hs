@@ -79,6 +79,7 @@ instance PrintableJS JSModule where
 instance PrintableJS JSDecl where
     (&>) doc (JSDeclFunc name params exprs)      = doc $+$ (funcDef name params $ toDoc exprs) $+$ blank
     (&>) doc (JSDeclExport name)                 = doc $+$ text "export" <+> text name <> semi
+    (&>) doc (JSDeclConst name val)              = doc $+$ text "const" <+> text name <+> equals &> val
     (&>) doc (JSDeclImport src default' imports) = doc $+$ importStatement src default' imports
 
 
