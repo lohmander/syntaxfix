@@ -29,6 +29,7 @@ data Decl
 data Expr
     = ExprLit Lit
     | ExprApp Expr [Expr]
+    | ExprParensProp Expr String
     | ExprVar String
     | ExprArith ArithOp Expr Expr
     | ExprPipe Expr Expr

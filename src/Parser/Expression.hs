@@ -11,7 +11,8 @@ import           Parser.Lexer
 
 
 pExpr :: Parser Expr
-pExpr = try pApp
+pExpr = try pInstancePull
+    <|> try pApp
     <|> try pArithExpr
     <|> try pTerm
 
@@ -95,6 +96,14 @@ pRecord = L.lineFold scn $ \sc' -> do
         _   <- sc'
         val <- pExpr
         return (key, val)
+
+
+pInstancePull :: Parser Expr
+pInstancePull = do
+    (call, args) <- lineSepIndentFold ident pTerm sc
+    _            <- sym ".."
+    ins          <- pExpr
+    return $ ExprApp (ExprParensProp ins call) args
 
 
 pApp :: Parser Expr
