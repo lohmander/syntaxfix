@@ -101,14 +101,10 @@
     ```
     
 - [ ] Constants
-  - [ ] Top level definition
+  - [x] Top level definition
   
     ```haskell
-    const HOWDY = "Hello"
-    
-    const
-        COW = 1
-        CAT = 2
+    const greeting = "Hello"
     ```
     
   - [ ] Inferred type
