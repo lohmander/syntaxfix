@@ -51,4 +51,8 @@ data Lit
     | LitFloat Double
     | LitBool Bool
     | LitList [Expr]
+    | LitRecord [(String, Expr)]
+    | LitNothing
+    | LitNull
+    | LitUndefied
     deriving (Eq, Show)

@@ -32,16 +32,13 @@ reservedWords =
     ]
 
 
-lineComment :: Parser ()
-lineComment = L.skipLineComment "#"
-
 
 scn :: Parser ()
-scn = L.space (void P.spaceChar) lineComment empty
+scn = L.space (void P.spaceChar) empty empty
 
 
 sc :: Parser ()
-sc = L.space (void $ P.oneOf " \t") lineComment empty
+sc = L.space (void $ P.oneOf " \t") empty empty
 
 
 lexeme :: Parser a -> Parser a

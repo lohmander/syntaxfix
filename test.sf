@@ -1,44 +1,32 @@
-module Test runs main
+module RoomPoster exports RoomPoster 
 
-from react     import (default as React) Component
-from Core/Math import (add as adder) subtract
+fromjs react        import (default as React) Component
+fromjs react-native import StyleSheet TouchableHighlight Text View
 
-
-MyComponent props =
-    div []
-        [ h1 [] [ heading ]
-        , span [] [ "test" ]
-        , span [] [ "hopp" ]
-        ]
-  where
-    heading = "woop"
+from Utils/Font  import thin
+from Utils/React import el
 
 
-greet name =
-    greeting
-  where
-    greeting = "hello " + name
-
-
-square x = y
-  where
-    y = x ^ 2
-
-
-id x = x
-
-
-cube x = x ^ 3
-
-
-flip fn = \a b -> fn b a
-
-
-
-main =
-    app.get "asdf" handleRoot
-    app.get "asdf" handleRoot
-    app.listen 3000
-  where
-    app = Express (0) 
-
+styles =
+    StyleSheet.create
+        { root =
+            { marginTop = 10
+            , marginBottom = 10
+            , flexGrow = 1
+            , minWidth = 300
+            }
+        , poster =
+            { padding = 20
+            , height = 180
+            , borderRadisu = 1
+            }
+        , content =
+            { flex = 1
+            , justifyContent = "flex-end"
+            }
+        , name =
+            { color = "#fff"
+            , fontSize = 32
+            , fontFamily = thin ()
+            }
+        }

@@ -36,7 +36,7 @@ pDecl = try pImport
 pImport :: Parser Decl
 pImport = L.nonIndented scn $ do
     kind    <- try pFromJS <|> pFromSF
-    src     <- identWith ['/']
+    src     <- identWith ['/', '-']
     rWord "import"
     default' <- P.option Nothing $ try $ parens pDefaultAs
     imports  <- P.sepBy1 (try (parens pImportItemAs) <|> pImportItem) sc

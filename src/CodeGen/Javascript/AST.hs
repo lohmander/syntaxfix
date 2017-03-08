@@ -43,4 +43,8 @@ data JSLit
     | JSLitInt Integer
     | JSLitBool Bool
     | JSLitArray [JSExpr]
+    | JSLitObject [(String, JSExpr)]
+    | JSLitNull
+    | JSLitNothing
+    | JSLitUndefined
     deriving (Show, Eq)

@@ -64,5 +64,10 @@ instance JSTransformable Lit JSLit where
     transform (LitString str) = JSLitString str
     transform (LitFloat num)  = JSLitFloat $ double2Float num
     transform (LitList vals)  = JSLitArray $ map transform vals
+    transform (LitRecord kvs) = JSLitObject $ map (\(k, v) -> (k, transform v)) kvs
     transform (LitInt num)    = JSLitInt num
     transform (LitBool bool)  = JSLitBool bool
+    transform LitNothing      = JSLitNothing
+    transform LitNull         = JSLitNull
+    transform LitUndefied     = JSLitUndefined
+

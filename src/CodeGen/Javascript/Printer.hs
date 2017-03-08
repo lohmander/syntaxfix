@@ -109,8 +109,12 @@ instance PrintableJS JSOp where
 
 
 instance PrintableJS JSLit where
+    (&>) doc JSLitNothing      = doc
+    (&>) doc JSLitNull         = doc <+> text "null"
+    (&>) doc JSLitUndefined    = doc <+> text "undefined"
     (&>) doc (JSLitString str) = doc <+> (quotes $ text str)
     (&>) doc (JSLitFloat num)  = doc <+> float num
     (&>) doc (JSLitInt num)    = doc <+> integer num
     (&>) doc (JSLitBool bool)  = doc <+> text (if bool then "true" else "false")
     (&>) doc (JSLitArray vals) = doc <+> (brackets $ foldl (<>) empty $ commaSep $ map toDoc vals)
+    (&>) doc (JSLitObject kvs) = doc <+> (braces $ foldl (<>) empty $ commaSep $ map (\(k, v) -> text k <> colon <+> toDoc v) kvs)

@@ -19,18 +19,40 @@ pExpr = try pApp
 pTerm :: Parser Expr
 pTerm = try (parens pExpr)
     <|> try pLambda
+    <|> try pNull
+    <|> try pUndefined
+    <|> try pNothing
     <|> try pString
     <|> try pFloat
     <|> try pInt
     <|> try pBool
     <|> try pVar
     <|> try pList
+    <|> try pRecord
+
+
+pNull :: Parser Expr
+pNull = do
+    rWord "null"
+    return $ ExprLit $ LitNull
+
+
+pUndefined :: Parser Expr
+pUndefined = do
+    rWord "undefined"
+    return $ ExprLit $ LitUndefied
+
+
+pNothing :: Parser Expr
+pNothing = do
+    _ <- sym "()"
+    return $ ExprLit $ LitNothing
 
 
 pString :: Parser Expr
 pString = do
     _   <- sym "\""
-    str <- P.many (P.alphaNumChar <|> P.spaceChar)
+    str <- P.many $ P.noneOf ['"']
     _   <- sym "\""
     return $ ExprLit $ LitString str
 
@@ -60,6 +82,19 @@ pList :: Parser Expr
 pList = L.lineFold scn $ \sc' -> do
     vals <- brackets $ P.sepBy (manyFolds sc' pExpr) $ sym ","
     return $ ExprLit $ LitList vals
+
+
+pRecord :: Parser Expr
+pRecord = L.lineFold scn $ \sc' -> do
+    kvPairs <- braces $ P.sepBy (manyFolds sc' $ pKv sc') $ sym ","
+    return $ ExprLit $ LitRecord kvPairs
+  where
+    pKv sc' = do
+        key <- ident
+        _   <- sym "="
+        _   <- sc'
+        val <- pExpr
+        return (key, val)
 
 
 pApp :: Parser Expr
