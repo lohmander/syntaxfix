@@ -20,7 +20,8 @@ data ImportType
 
 
 data Decl
-    = DeclFunc String [String] [Expr] [(String, Expr)]
+    = DeclFunc String Int [String] [Expr] [(String, Expr)]
+    | DeclOverloadedFunc String [Decl]
     | DeclImport ImportType String (Maybe String) [(Maybe String, String)]
     | DeclConst String Expr
     deriving (Eq, Show)

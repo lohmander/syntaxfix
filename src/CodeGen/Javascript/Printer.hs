@@ -87,10 +87,26 @@ instance PrintableJS [JSState] where
     (&>) doc statements = foldl (&>) empty statements
 
 
+instance PrintableJS JSComp where
+    (&>) doc (JSCompEq e1 e2) = doc &> e1 <+> text "===" &> e2
+
+
 instance PrintableJS JSState where
-    (&>) doc (JSStateReturn expr) = doc $+$ text "return" &> expr <> semi
-    (&>) doc (JSStateLoose expr)  = doc $+$ toDoc expr <> semi
+    (&>) doc (JSStateReturn expr)         = doc $+$ text "return" &> expr <> semi
+    (&>) doc (JSStateLoose expr)          = doc $+$ toDoc expr <> semi
     (&>) doc (JSStateLetAssign name expr) = doc $+$ (letAssign name $ toDoc expr)
+    (&>) doc (JSStateIf (x:xs))           =
+        doc $+$
+        ifState "if" x <+>
+        foldl (\doc' x' -> doc' <+> (ifState "else if" x')) empty xs
+      where
+        ifState kind (cond, state) =
+            empty <>
+            text kind <+>
+            parens (toDoc cond) <+>
+            lbrace $+$
+            (toDoc state) $+$
+            rbrace
 
 
 instance PrintableJS JSExpr where

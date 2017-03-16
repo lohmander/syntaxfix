@@ -1,35 +1,10 @@
-module RoomPoster exports RoomPoster 
-
-fromjs react        import (default as React) Component
-fromjs react-native import StyleSheet TouchableHighlight Text View
-
-from Utils/Font  import thin
-from Utils/React import el
+module Main runs main
 
 
-const styles = StyleSheet.create
-    { root =
-        { marginTop = 10
-        , marginBottom = 10
-        , flexGrow = 1
-        , minWidth = 300
-        }
-    , poster =
-        { padding = 20
-        , height = 180
-        , borderRadisu = 1
-        }
-    , content =
-        { flex = 1
-        , justifyContent = "flex-end"
-        }
-    , name =
-        { color = "#fff"
-        , fontSize = 32
-        , fontFamily = thin ()
-        }
-    }
+greet name = "Sup " + name
 
+greet fname lname = "Hello " + fname + " " + lname
 
-greet name =
-    replace "Hej" "Hopp" .. "Wohoo" 
+main =
+    console.log (greet "Hannes" "Lohmander")
+    console.log ((greet "Alejandro"))

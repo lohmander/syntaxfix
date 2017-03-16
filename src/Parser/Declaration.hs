@@ -5,7 +5,7 @@ module Parser.Declaration where
 import           Text.Megaparsec        (try, (<|>), (<?>))
 import qualified Text.Megaparsec        as P
 import           Text.Megaparsec.Expr
-import           Text.Megaparsec.Lexer  as L
+import qualified Text.Megaparsec.Lexer  as L
 import           Text.Megaparsec.String
 
 import           AST
@@ -77,19 +77,33 @@ pFunc :: Parser Decl
 pFunc = L.nonIndented scn $ do
     pos  <- L.indentLevel
 
-    (fnName, params) <- pFuncDef
-    body             <- pFuncBody pos
-    vars             <- P.option [] (try $ pFuncVars pos)
+    (fnName, pc, params) <- pFuncDef
+    body                 <- pFuncBody pos
+    vars                 <- P.option [] (try $ pFuncVars pos)
 
-    return $ DeclFunc fnName params body vars
+    return $ DeclFunc fnName (if pc < 0 then (length params) else pc) params body vars
 
 
-pFuncDef :: Parser (String, [String])
+pFuncDef :: Parser (String, Int, [String])
 pFuncDef = do
-    fnName <- ident
-    params <- P.many ident
-    _      <- sym "="
-    return (fnName, params)
+    (name, pc) <- pFuncId
+    params     <- P.many ident
+    _          <- sym "="
+    return (name, pc, params)
+
+
+pFuncId :: Parser (String, Int)
+pFuncId = try pExpl <|> pImpl
+  where
+    pExpl = lexeme $ do
+        name <- ident
+        _    <- sym "/"
+        pc   <- integer
+        return (name, fromInteger pc)
+
+    pImpl = do
+        name <- ident
+        return (name, -1)
 
 
 pFuncBody :: P.Pos -> Parser [Expr]

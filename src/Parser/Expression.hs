@@ -141,5 +141,6 @@ pArithOp =
       ]
     ]
 
+
 pArithExpr :: Parser Expr
 pArithExpr = makeExprParser pTerm pArithOp

@@ -14,9 +14,15 @@ data JSDecl
     deriving (Show, Eq)
 
 
+data JSComp
+    = JSCompEq JSExpr JSExpr
+    deriving (Show, Eq)
+
+
 data JSState
     = JSStateReturn JSExpr
     | JSStateLetAssign String JSExpr
+    | JSStateIf [(JSComp, JSState)]
     | JSStateLoose JSExpr -- REMOVE THIS
     deriving (Show, Eq)
 

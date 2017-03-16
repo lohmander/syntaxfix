@@ -9,6 +9,14 @@ import           CodeGen.Javascript.AST
 import           GHC.Float
 
 
+makeFnCond :: Decl -> (JSComp, JSState)
+makeFnCond (DeclFunc name pc params (x:_) vars) =
+    (cond, JSStateReturn $ JSExprApp fn $ map (\n -> JSExprVar $ "arguments[" ++ (show n) ++ "]") [0..pc - 1])
+  where
+    cond = JSCompEq (JSExprParensProp (JSExprVar "arguments") "length") (JSExprLit $ JSLitInt $ toInteger pc)
+    fn   = JSExprLambda params $ transform x
+
+
 class JSTransformable a b where
     transform :: a -> b
 
@@ -21,9 +29,10 @@ instance JSTransformable Module JSModule where
 
 
 instance JSTransformable Decl JSDecl where
-    transform (DeclFunc name params statements vars) = JSDeclFunc name params $ transform vars ++ transform statements
-    transform (DeclImport _ src default' imports)    = JSDeclImport src default' imports
-    transform (DeclConst name val)                   = JSDeclConst name $ transform val
+    transform (DeclOverloadedFunc name fns)            = JSDeclFunc name [] [JSStateIf $ map makeFnCond fns] -- map nestFn fns
+    transform (DeclFunc name _ params statements vars) = JSDeclFunc name params $ transform vars ++ transform statements
+    transform (DeclImport _ src default' imports)      = JSDeclImport src default' imports
+    transform (DeclConst name val)                     = JSDeclConst name $ transform val
 
 
 instance JSTransformable [(String, Expr)] [JSState] where
