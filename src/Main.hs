@@ -3,9 +3,8 @@
 
 module Main where
 
-import qualified CodeGen.Javascript.Printer     as JS
+import qualified CodeGen.Javascript.Pretty      as JS
 import qualified CodeGen.Javascript.Transformer as JS
-import           Desugar
 import           Parser
 import           Text.Megaparsec
 
@@ -38,6 +37,4 @@ run _ = do putStr "Can't do that yet."
 gen :: String -> String -> String
 gen filename c = case (parse parser filename c) of
     Left err -> parseErrorPretty err
-    Right st -> case desugar st of
-        Left err  -> show err
-        Right st' -> JS.print $ JS.transform st'
+    Right st' -> JS.prettyPrint $ JS.transform st'

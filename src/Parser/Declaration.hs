@@ -81,7 +81,7 @@ pFunc = L.nonIndented scn $ do
     body                 <- pFuncBody pos
     vars                 <- P.option [] (try $ pFuncVars pos)
 
-    return $ DeclFunc fnName (if pc < 0 then (length params) else pc) params body vars
+    return $ DeclFunc (fnName, (if pc < 0 then (length params) else pc)) params body vars
 
 
 pFuncDef :: Parser (String, Int, [String])

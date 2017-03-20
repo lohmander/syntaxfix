@@ -12,7 +12,7 @@ type Env = Map.Map String Decl
 
 
 desugar :: Module -> Either () Module
-desugar module' = Right $ evalState (dModule module') Map.empty
+desugar module' = Right module' -- $ evalState (dModule module') Map.empty
 
 
 lookupFunc :: String -> State Env (Maybe Decl)
@@ -23,12 +23,12 @@ lookupFunc name = do
 
 overloadFunc :: Maybe Decl -> Decl -> State Env Decl
 overloadFunc ofn fn = case (ofn, fn) of
-    (Nothing, func@(DeclFunc name _ _ _ _)) -> do
+    (Nothing, func@(DeclFunc name  _ _ _)) -> do
         env <- get
         put $ Map.insert name func env
         return func
 
-    (Just ofn'@(DeclFunc name _ _ _ _), _) -> do
+    (Just ofn'@(DeclFunc name _ _  _), _) -> do
         env <- get
         put $ Map.insert
             name
@@ -64,7 +64,7 @@ dDecl decl = case decl of
         env   <- get
         func' <- lookupFunc name
         ofn   <- overloadFunc func' func
-        return $ Just ofn
+        return Nothing
 
     decl ->
         return $ Just decl

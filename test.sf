@@ -1,10 +1,13 @@
 module Main runs main
 
 
-greet name = "Sup " + name
+greet/1 name = "Sopp asdfas"
 
-greet fname lname = "Hello " + fname + " " + lname
+greet a b c = a
+greet/2 name family =
+    "Sopp 234"
+    "As"
+    True
 
-main =
-    console.log (greet "Hannes" "Lohmander")
-    console.log ((greet "Alejandro"))
+main = "asdf"
+

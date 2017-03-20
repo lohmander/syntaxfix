@@ -1,6 +1,7 @@
 module AST
   ( Module(..)
   , ImportType(..)
+  , FuncId
   , Decl(..)
   , Expr(..)
   , ArithOp(..)
@@ -19,8 +20,11 @@ data ImportType
     deriving (Eq, Show)
 
 
+type FuncId = (String, Int)
+
+
 data Decl
-    = DeclFunc String Int [String] [Expr] [(String, Expr)]
+    = DeclFunc FuncId [String] [Expr] [(String, Expr)]
     | DeclOverloadedFunc String [Decl]
     | DeclImport ImportType String (Maybe String) [(Maybe String, String)]
     | DeclConst String Expr
