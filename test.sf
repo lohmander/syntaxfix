@@ -10,4 +10,3 @@ greet/2 name family =
     True
 
 main = "asdf"
-
